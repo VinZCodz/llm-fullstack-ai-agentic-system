@@ -2,7 +2,9 @@
 
 This repository contains the Helm chart for the AI Expense Chat Server. The chart is hosted as an OCI artifact in the GitHub Container Registry (GHCR).
 
-Quick-start guide to deploying the AI Expense Server via Helm OCI and Gateway API.
+# ⚡ Quick-start: 
+
+Deploying the AI Expense Server via Helm OCI and Gateway API.
 
 ## 📋 Prerequisites
 - Kubernetes Cluster (k3d, Minikube, or Cloud) 
@@ -29,59 +31,44 @@ Create the namespace and inject the sensitive credentials before installing the 
 ```
 kubectl create namespace ai-expense-chat-app
 
+# Create a file named .secrets.env and add below secrets
+# MODEL="your_Groq_chat_model_name" 
+# GROQ_API_KEY="your_key" 
+# TURSO_DATABASE_URL="your_url" 
+# TURSO_AUTH_TOKEN="your_token" 
+# TURSO_RO_AUTH_TOKEN="your_readonly_token
+
 # Create secret with the exact name referenced in chart values
 kubectl create secret generic ai-expense-chat-secrets \
-  --namespace ai-expense-chat-app \
-  --from-literal=MODEL="your_Groq_chat_model_name" \
-  --from-literal=GROQ_API_KEY="your_key" \
-  --from-literal=TURSO_DATABASE_URL="your_url" \
-  --from-literal=TURSO_AUTH_TOKEN="your_token" \
-  --from-literal=TURSO_RO_AUTH_TOKEN="your_readonly_token"
+    --namespace ai-expense-chat-app \
+    --from-env-file=.secrets.env
 ```
 
-## 2️⃣ Pull & Configure
-Pull the OCI artifact to inspect/edit values or install directly.
+## 2️⃣ Deploy
+Run the installation using the Gateway API settings. 
 
 ```
-# Pull and untar to get values.yaml (optional)
-helm pull oci://ghcr.io/vinzcodz/charts/ai-expense-chat-server --version latest --untar
-
-# Get your Codespace URL (strip https://)
-export APP_HOST=$(gp url 8080 | sed 's|https://||') //If hosted then paste directly the Domain name.
-```
-
-## 3️⃣ Deploy
-Run the installation using the Gateway API settings and the correct Service Port. 
-
-- Edit the values.yaml in chart downloaded above, with your Gateway API settings.
-
--OR-
-
-- Run directly 
-```
-helm upgrade --install ai-expense oci://ghcr.io/vinzcodz/charts/ai-expense-chat-server \
-  --version latest \
+helm upgrade --install prod-backend-app oci://ghcr.io/vinzcodz/charts/ai-expense-chat-server \
+  --version <version number> \
   --namespace ai-expense-chat-app \
   --set existingSecretName="ai-expense-chat-secrets" \
   --set httpRoute.enabled=true \
-  --set httpRoute.hostnames[0]="$APP_HOST" \
-  --set httpRoute.parentRefs[0].name="traefik-gateway" \
+  --set httpRoute.hostnames[0]="*.app.github.dev" \
+  --set httpRoute.hostnames[1]="localhost" \
+  --set httpRoute.parentRefs[0].name="vinzcodz-gateway" \
   --set httpRoute.parentRefs[0].namespace="kube-system"
+
+#Important: verify the image Digest sha256!
 ```
 
-## 4️⃣ Verification & Health Checks
+## 3️⃣ Verification & Health Checks
 - Check A: Is the traffic route accepted?
 ```
-kubectl get httproute -n ai-expense-chat-app
+kubectl describe httproute prod-backend-app-ai-expense-chat-server -n ai-expense-chat-app
 ```
-Status should show ```'Accepted: True'``` and ```'Programmed: True'```
+Status should show ```Reason: Accepted``` and ```Status: True```
 
-- Check B: Connectivity Test
-
-```
-curl -I https://$APP_HOST/
-```
-Shows: ```Welcome to Expense Agent endpoints!```
+- Check B: Check connectivity by hitting the endpoint with port shows: ```Welcome to Expense Agent endpoints!```
 
 ## SRE Notes:
 

@@ -40,13 +40,15 @@ httpRoute:
   annotations: {}
   # Which Gateways this Route is attached to.
   parentRefs:
-  - name: traefik-gateway
+  - name: vinzcodz-gateway
     namespace: kube-system
-    sectionName: web # Traefik's default listener name for port 8000/80
+    # sectionName: web # Traefik's default listener name for port 8000/80
     
   # Hostnames matching HTTP header.
   hostnames:
-  - "solid-space-123-8080.app.github.dev" # Replace with your real forward URL
+  - "*.app.github.dev" 
+  - "localhost"
+
   # List of rules and filters applied.
   rules:
   - matches:
