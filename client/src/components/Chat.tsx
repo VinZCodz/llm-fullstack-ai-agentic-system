@@ -51,7 +51,7 @@ export default function Chat() {
                 async onopen(response) {
                     if (response.ok) return;
 
-                    // If the server returns a 4xx or 5xx right away
+                    setIsStreaming(false);
                     throw new Error("Failed to connect to server backend");
                 },
                 onmessage(msg) {
@@ -59,19 +59,19 @@ export default function Chat() {
                 },
                 onerror(err) {
                     console.error("Stream failed:", err);
+                    setIsStreaming(false);
 
                     setMessages(prev => [...prev, {
                         id: crypto.randomUUID(),
                         type: "ai",
-                        payload: { text: "⚠️ Failed to connect to server backend!" }
+                        payload: { text: "⚠️ Failed to connect to server backend. Please try again." }
                     }]);
-
-                    setIsStreaming(false); // Stop loading
 
                     throw err;
                 }
             });
         } catch (error) {
+            setIsStreaming(false);
             console.error("SSE Catch:", error);
         }
     }
@@ -119,7 +119,7 @@ export default function Chat() {
                     {messages!.map((m, i) => (
                         <ChatBubble key={m.id} message={m} />
                     ))}
-                    
+
                     {isStreaming && messages.at(-1)?.type === 'user' && (
                         <ChatSkeleton />
                     )}
