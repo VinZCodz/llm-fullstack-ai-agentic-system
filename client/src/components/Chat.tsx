@@ -5,10 +5,13 @@ import { ChatBubble } from "@/components/ChatBubble";
 import { ChatInput } from "@/components/ChatInput";
 import { SuggestionCard } from "@/components/SuggestionCard";
 import { fetchEventSource } from '@microsoft/fetch-event-source';
+import { ChatSkeleton } from "./ChatSkeleton";
 
 export default function Chat() {
     const [messages, setMessages] = useState<StreamMessage[]>([{ id: crypto.randomUUID(), type: "ai", payload: { text: `Welcome! How can I help you today?` } }]);
     const [input, setInput] = useState("");
+    const [isStreaming, setIsStreaming] = useState(false);
+
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
     const chatUrl = process.env.NEXT_PUBLIC_CHAT_API_URL;
@@ -24,7 +27,9 @@ export default function Chat() {
 
     const handleSend = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!input.trim()) return;
+        if (!input.trim() || isStreaming) return;
+
+        setIsStreaming(true); // Start loading
 
         // Add user message
         setMessages(prev => [...prev, { id: crypto.randomUUID(), type: "user", payload: { text: input } }])
@@ -35,29 +40,46 @@ export default function Chat() {
     };
 
     const fetchSSE = async (input: string, threadId: string) => {
-        await fetchEventSource(chatUrl!, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'text/event-stream'
-            },
-            body: JSON.stringify({ input, threadId }),
-            async onopen(response) {
-                if (response.ok) return; // Connection success
-                console.error("Server error:", response.status);
-            },
-            onmessage(msg) {
-                updateServerMessages(JSON.parse(msg.data));
-            },
-            onerror(err) {
-                console.error("Stream failed:", err);
-                throw err; // Re-throws to trigger auto-retry logic
-            }
-        });
+        try {
+            await fetchEventSource(chatUrl!, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'text/event-stream'
+                },
+                body: JSON.stringify({ input, threadId }),
+                async onopen(response) {
+                    if (response.ok) return;
+
+                    // If the server returns a 4xx or 5xx right away
+                    throw new Error("Failed to connect to server backend");
+                },
+                onmessage(msg) {
+                    updateServerMessages(JSON.parse(msg.data));
+                },
+                onerror(err) {
+                    console.error("Stream failed:", err);
+
+                    setMessages(prev => [...prev, {
+                        id: crypto.randomUUID(),
+                        type: "ai",
+                        payload: { text: "⚠️ Failed to connect to server backend!" }
+                    }]);
+
+                    setIsStreaming(false); // Stop loading
+
+                    throw err;
+                }
+            });
+        } catch (error) {
+            console.error("SSE Catch:", error);
+        }
     }
 
     //TODO: Optimize this logic.
     const updateServerMessages = (message: StreamMessage) => {
+        setIsStreaming(false); // Stop loading
+
         switch (message.type) {
             case 'ai':
                 setMessages(prev => {
@@ -97,6 +119,10 @@ export default function Chat() {
                     {messages!.map((m, i) => (
                         <ChatBubble key={m.id} message={m} />
                     ))}
+                    
+                    {isStreaming && messages.at(-1)?.type === 'user' && (
+                        <ChatSkeleton />
+                    )}
                     <div ref={messagesEndRef} className="h-4" />
                 </div>
             </main>
