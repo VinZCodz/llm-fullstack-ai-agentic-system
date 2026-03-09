@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { siteConfig } from "@/config/site";
-import { Wallet, Circle, Landmark, AlertCircle } from "lucide-react";
+import { Wallet, Circle, Landmark, AlertCircle, Sparkle } from "lucide-react";
 import Image from 'next/image';
 
 export function Header({ messageCount }: { messageCount: number }) {
@@ -93,7 +93,7 @@ export function Header({ messageCount }: { messageCount: number }) {
                 : "bg-zinc-900/50 border-zinc-800 hover:border-blue-500/50"
               }`}
           >
-            <Landmark
+            <Sparkle
               size={22}
               className={`transition-transform duration-500 ${isScrolled ? "rotate-0" : "rotate-360"
                 } hover:animate-wiggle ${hasNewMessage ? "text-blue-400" : "text-blue-500"}`}
