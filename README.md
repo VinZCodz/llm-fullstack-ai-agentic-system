@@ -1,6 +1,10 @@
 # Full Stack AI Agentic Application.
 
-### Stack
+<p align="center">
+<img width="900" height="700" alt="image" src="https://github.com/user-attachments/assets/b3da0412-2f2a-4825-b8ea-f9285945f3cf" />
+</p>
+
+## Stack
 
 UI | UX Client Stack:
 - NextJS React UI
@@ -42,7 +46,7 @@ Devops | IaC Stack:
 
 [![Build and Push Docker Image](https://github.com/VinZCodz/llm-generative-ui/actions/workflows/docker-publish.yml/badge.svg)](https://github.com/VinZCodz/llm-generative-ui/actions/workflows/docker-publish.yml)
 
-### Open Source Contributions
+## Open Source Contributions
 - [ai-agentic-chat-ui-vinzcodz](https://github.com/VinZCodz/ai-agentic-chat-ui-vinzcodz): A ready made UI template used for AI Agentic chats, built on NextJS client side framework. Plug your backend services to stream.
 - [k3d-cluster-on-demand](https://github.com/VinZCodz/k3d-cluster-on-demand): Instant 3-Node K3d cluster + Gateway API + Headlamp GUI on GitHub Codespaces! One-click Kubernetes Multi-Node environment with Traefik v3, Gateway API, and Metrics Server pre-configured.
 - [minikube-cluster-on-demand](https://github.com/VinZCodz/minikube-cluster-on-demand): Instant Minikube + Gateway API + GUI on GitHub Codespaces. One-click Kubernetes environment with Traefik v3, Gateway API, and Metrics Server pre-configured.
