@@ -7,7 +7,6 @@ import { inject } from 'vitest';
 import { expenseAgentGraphBuilder } from '../../../src/expenseAgent.ts';
 import { llm } from "../../../src/model.ts"
 import { SYSTEM_PROMPT } from "../../../src/prompt.ts"
-import { MemorySaver } from '@langchain/langgraph';
 
 // Get the name provided by Global Setup
 const { dbName } = inject('test_db_config');
@@ -17,7 +16,7 @@ export const { testDb, testClient } = createLocalDbClient(dbName);
 const expenseService = new ExpenseService(testDb, testDb, new SelectQueryGuard());
 
 const tools = initTools(expenseService);
-export const ExpenseAgent = expenseAgentGraphBuilder({ llm, tools, systemPrompt: SYSTEM_PROMPT }).compile({ checkpointer: new MemorySaver() });
+export const ExpenseAgent = expenseAgentGraphBuilder({ llm, tools, systemPrompt: SYSTEM_PROMPT }).compile();
 
 // Lifecycle Management
 beforeEach(async () => {

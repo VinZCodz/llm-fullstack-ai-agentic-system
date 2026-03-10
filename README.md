@@ -1,6 +1,14 @@
 # 🏗️ Full-Stack Agentic System
 **This repository demonstrates how to move beyond linear LLM chains into cyclic, non-linear agentic workflows on a cloud-native infrastructure.**
 
+With due emphasis on using **Software Development Best Practices like:**
+  - Version Control Using Git.
+  - Design Principles: SOLID, DI, IoC, SSE to guide clean, maintainable architecture and reduce technical debt. 
+  - Testing: Test-Driven Development (TDD), unit and integration tests using Vitest and LLM-as-Judge. 
+  - Continuous Integration/Continuous Deployment (CI/CD) to automate builds via GitHub Actions.
+  - DevOps & Infrastructure as Code (IaC): Docker & Kubernetes with Helm.
+  - Clear and helpful documentation.
+
 <p align="center">
 <img width="900" height="700" alt="image" src="https://github.com/user-attachments/assets/b3da0412-2f2a-4825-b8ea-f9285945f3cf" />
 </p>
@@ -25,9 +33,6 @@
 
 - **Bun + Express (SSE):**
   - High-speed TypeScript runtime delivering Server-Sent Events for real-time streaming of the agent’s internal state transitions.
-
-- Software devlopement Best practcies:
-  - Using DI and clean architecture.
 
 ## Persistence & DB Layer
 - **Turso DB (LibSQL):**
@@ -92,6 +97,10 @@ Alongside this application, I have released several foundational templates that 
 - [k3d-cluster-on-demand](https://github.com/VinZCodz/k3d-cluster-on-demand): A "one-click" GitHub Codespaces environment that spins up a 3-Node K3d cluster. Pre-configured with Traefik v3, Gateway API, Metrics Server, and Headlamp GUI.
 
 - [minikube-cluster-on-demand](https://github.com/VinZCodz/minikube-cluster-on-demand): Instant Minikube environment on Codespaces. Perfect for testing Kubernetes-native AI backends with Gateway API and GUI dashboards pre-installed.
+
+# 🎬 **The "Bottom Line"**
+
+**Building the agent is 20% of the work. The other 80% is the infrastructure that makes it reliable, observable, and fast.**
 
 <Add Frontend chat windows>
 
