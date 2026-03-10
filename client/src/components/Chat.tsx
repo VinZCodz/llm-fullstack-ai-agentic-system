@@ -64,7 +64,7 @@ export default function Chat() {
                     setMessages(prev => [...prev, {
                         id: crypto.randomUUID(),
                         type: "ai",
-                        payload: { text: "⚠️ Failed to connect to server backend. Please try again." }
+                        payload: { text: "⚠️ Failed to connect to server backend. Please try after sometime!" }
                     }]);
 
                     throw err;
