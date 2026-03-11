@@ -97,13 +97,9 @@ Alongside this application, I have released several foundational templates that 
 - [k3d-cluster-on-demand](https://github.com/VinZCodz/k3d-cluster-on-demand): A "one-click" GitHub Codespaces environment that spins up a 3-Node K3d cluster. Pre-configured with Traefik v3, Gateway API, Metrics Server, and Headlamp GUI.
 
 - [minikube-cluster-on-demand](https://github.com/VinZCodz/minikube-cluster-on-demand): Instant Minikube environment on Codespaces. Perfect for testing Kubernetes-native AI backends with Gateway API and GUI dashboards pre-installed.
+  
+- [✅ Production-Grade Agentic AI Implementation Checklist](https://gist.github.com/VinZCodz/dacc4ae72d8ebd96dd0b5c4ff819dea6): This checklist is designed for a Senior and Lead Engineers to use as a technical implementation roadmap. It follows a clean separation of concerns, ensuring the agent is a testable, injectable service rather than a script.
 
 # 🎬 **The "Bottom Line"**
 
 **Building the agent is 20% of the work. The other 80% is the infrastructure that makes it reliable, observable, and fast.**
-
-<Add Frontend chat windows>
-
-<Add Graph State>
-
-<Some description>
